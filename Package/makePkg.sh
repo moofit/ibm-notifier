@@ -32,15 +32,6 @@ askYesNo()
     esac
 }
 
-# This function detemines whether debug is set, and outputs to the writelog function if set
-
-debuglog()
-{
-    if [[ -n ${DEBUG} ]]; then
-        writelog "${1}"
-    fi
-}
-
 # This function outputs all variables set above to stdout and logger, as defined in the writelog function above
 
 echoVariables()
@@ -137,6 +128,10 @@ cat >>"${TMP_DIR}/build/requirements.plist" <<EOF
 </dict>
 </plist>
 EOF
+
+# Remove any sort of quarantine
+/usr/bin/xattr -cr "${TMP_DIR}"
+/usr/bin/xattr -cr "${APP_LOCATION}"
 
 # Create component package
 /usr/bin/pkgbuild \
